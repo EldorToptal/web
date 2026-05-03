@@ -9,6 +9,8 @@ const apiBaseUrl = (window.REPORT_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
 const token = new URLSearchParams(window.location.search).get("token");
 const cacheKey = token ? `report-cache:${token}` : "";
 
+document.body.classList.add("is-loading");
+
 const uiText = {
   ru: {
     pageTitle: "Отчёт по коже",
@@ -148,6 +150,8 @@ function renderReport(payload) {
   loadingState.hidden = true;
   emptyState.hidden = true;
   reportPage.hidden = false;
+  document.body.classList.remove("is-loading", "has-error");
+  document.body.classList.add("is-ready");
 }
 
 function renderConcernBadges(concerns) {
@@ -307,6 +311,8 @@ function showEmpty(message) {
   emptyMessage.textContent = message;
   reportPage.hidden = true;
   emptyState.hidden = false;
+  document.body.classList.remove("is-loading", "is-ready");
+  document.body.classList.add("has-error");
 }
 
 function formatScore(value) {
