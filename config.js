@@ -1,3 +1,3 @@
 window.REPORT_CONFIG = {
-  apiBaseUrl: "",
+  apiBaseUrl: "https://dwehgwcqyckzzrjumvbe.supabase.co ",
 };

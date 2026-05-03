@@ -2,6 +2,7 @@ const reportPage = document.getElementById("report-page");
 const emptyState = document.getElementById("empty-state");
 const emptyMessage = document.getElementById("empty-message");
 const urlLang = new URLSearchParams(window.location.search).get("lang");
+const telegramWebApp = window.Telegram?.WebApp;
 
 const apiBaseUrl = (window.REPORT_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
 const token = new URLSearchParams(window.location.search).get("token");
@@ -72,6 +73,8 @@ bootstrap().catch((error) => {
 });
 
 async function bootstrap() {
+  initTelegramWebApp();
+
   if (!token) {
     showEmpty(t(currentLocale()).missingToken);
     return;
@@ -85,10 +88,11 @@ async function bootstrap() {
   const cached = readCache();
   if (cached) renderReport(cached);
 
-  const response = await fetch(`${apiBaseUrl}/functions/v1/report?token=${encodeURIComponent(token)}`, {
-    method: "GET",
-    headers: { "Accept": "application/json" },
-  });
+  const request = buildReportRequest();
+  const endpoint = request.method === "POST"
+    ? `${apiBaseUrl}/functions/v1/report`
+    : `${apiBaseUrl}/functions/v1/report?token=${encodeURIComponent(token)}`;
+  const response = await fetch(endpoint, request);
 
   if (!response.ok) {
     showEmpty(response.status === 404 ? t(currentLocale()).unavailable : t(currentLocale()).loadFailed);
@@ -340,6 +344,25 @@ function writeCache(payload) {
   }
 }
 
+function buildReportRequest() {
+  const initData = telegramWebApp?.initData || "";
+  if (initData) {
+    return {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token, initData }),
+    };
+  }
+
+  return {
+    method: "GET",
+    headers: { "Accept": "application/json" },
+  };
+}
+
 function resolveLocale(reportLocale) {
   if (reportLocale === "uz" || reportLocale === "ru") return reportLocale;
   if (urlLang === "uz" || urlLang === "ru") return urlLang;
@@ -364,6 +387,21 @@ function applyLocale(locale) {
     if (!key) return;
     node.textContent = t(safeLocale)[key] || node.textContent;
   });
+}
+
+function initTelegramWebApp() {
+  if (!telegramWebApp) return;
+
+  telegramWebApp.ready();
+  telegramWebApp.expand();
+
+  if (telegramWebApp.setHeaderColor) {
+    telegramWebApp.setHeaderColor("#f5f0e8");
+  }
+
+  if (telegramWebApp.setBackgroundColor) {
+    telegramWebApp.setBackgroundColor("#f5f0e8");
+  }
 }
 
 function escapeHtml(value) {
