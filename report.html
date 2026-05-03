@@ -14,6 +14,13 @@
   </head>
   <body>
     <main class="page-shell">
+      <section class="loading-state" id="loading-state" aria-live="polite">
+        <div class="loading-card">
+          <div class="loader"></div>
+          <p id="loading-message">Loading report...</p>
+        </div>
+      </section>
+
       <section class="report-page" id="report-page" hidden>
         <header class="report-header">
           <div>
@@ -28,7 +35,7 @@
         </header>
 
         <section class="hero-grid">
-          <article class="panel media-panel">
+          <article class="panel media-panel" id="media-panel">
             <div class="panel-label" data-i18n="sourcePhoto">Исходное фото</div>
             <img id="source-image" alt="User photo" />
           </article>
@@ -118,7 +125,7 @@
         </footer>
       </section>
 
-      <section class="empty-state" id="empty-state">
+      <section class="empty-state" id="empty-state" hidden>
         <div class="empty-card">
           <h1 id="empty-title">Report unavailable</h1>
           <p id="empty-message">This report link is invalid or not configured yet.</p>

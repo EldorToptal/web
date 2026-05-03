@@ -1,4 +1,5 @@
 const reportPage = document.getElementById("report-page");
+const loadingState = document.getElementById("loading-state");
 const emptyState = document.getElementById("empty-state");
 const emptyMessage = document.getElementById("empty-message");
 const urlLang = new URLSearchParams(window.location.search).get("lang");
@@ -28,6 +29,7 @@ const uiText = {
     nextFocus: "Следующий фокус",
     diagnosisSummary: "Диагностическое резюме",
     selectedProducts: "Подобранные продукты",
+    loading: "Загружаем отчёт...",
     noMajorConcerns: "Без выраженных жалоб",
     openProduct: "Открыть продукт",
     emptyTitle: "Отчёт недоступен",
@@ -56,6 +58,7 @@ const uiText = {
     nextFocus: "Keyingi fokus",
     diagnosisSummary: "Diagnostik xulosa",
     selectedProducts: "Mos mahsulotlar",
+    loading: "Hisobot yuklanmoqda...",
     noMajorConcerns: "Jiddiy muammolar yo'q",
     openProduct: "Mahsulotni ochish",
     emptyTitle: "Hisobot mavjud emas",
@@ -108,6 +111,7 @@ function renderReport(payload) {
   const report = payload.report || {};
   const locale = resolveLocale(report.locale);
   applyLocale(locale);
+  document.getElementById("loading-message").textContent = t(locale).loading;
 
   fillText("report-title", t(locale).reportTitle);
   fillText("report-kicker", t(locale).reportKicker);
@@ -127,8 +131,10 @@ function renderReport(payload) {
   fillText("disclaimer", report.disclaimer || "");
 
   const sourceImage = document.getElementById("source-image");
+  const mediaPanel = document.getElementById("media-panel");
   sourceImage.src = payload.image_url || report.source_image_url || "";
   sourceImage.hidden = !sourceImage.src;
+  mediaPanel.hidden = !sourceImage.src;
 
   renderConcernBadges(report.concerns || []);
   renderDetailCards(report.detailed_scores || []);
@@ -139,6 +145,7 @@ function renderReport(payload) {
   renderPremiumDetails(report.premium_details);
   renderProducts(report.products || []);
 
+  loadingState.hidden = true;
   emptyState.hidden = true;
   reportPage.hidden = false;
 }
@@ -295,6 +302,7 @@ function fillText(id, value) {
 
 function showEmpty(message) {
   applyLocale(currentLocale());
+  loadingState.hidden = true;
   document.getElementById("empty-title").textContent = t(currentLocale()).emptyTitle;
   emptyMessage.textContent = message;
   reportPage.hidden = true;
@@ -381,6 +389,7 @@ function applyLocale(locale) {
   const safeLocale = locale === "uz" ? "uz" : "ru";
   document.documentElement.lang = safeLocale;
   document.title = t(safeLocale).pageTitle;
+  document.getElementById("loading-message").textContent = t(safeLocale).loading;
 
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     const key = node.getAttribute("data-i18n");
