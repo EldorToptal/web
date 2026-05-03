@@ -178,7 +178,10 @@ function renderDetailCards(cards) {
   const root = document.getElementById("detail-grid");
   root.innerHTML = "";
 
-  cards.forEach((card) => {
+  const visibleCards = (cards || []).filter((card) => card && card.available !== false);
+  root.parentElement.hidden = visibleCards.length === 0;
+
+  visibleCards.forEach((card) => {
     const value = clamp(card.score);
     const node = document.createElement("article");
     node.className = "detail-card";
@@ -200,7 +203,10 @@ function renderZones(zones) {
   const root = document.getElementById("zone-list");
   root.innerHTML = "";
 
-  zones.forEach((zone) => {
+  const visibleZones = (zones || []).filter((zone) => zone && zone.available !== false);
+  root.parentElement.hidden = visibleZones.length === 0;
+
+  visibleZones.forEach((zone) => {
     const node = document.createElement("article");
     node.className = "zone-row";
     node.innerHTML = `
@@ -221,7 +227,10 @@ function renderRecommendations(groups) {
   const root = document.getElementById("recommendation-grid");
   root.innerHTML = "";
 
-  groups.forEach((group) => {
+  const visibleGroups = (groups || []).filter((group) => group && Array.isArray(group.items) && group.items.length > 0);
+  root.parentElement.hidden = visibleGroups.length === 0;
+
+  visibleGroups.forEach((group) => {
     const node = document.createElement("article");
     node.className = "recommendation-card";
     node.innerHTML = `
@@ -292,6 +301,7 @@ function renderProducts(products) {
 function renderSimpleList(id, items) {
   const root = document.getElementById(id);
   root.innerHTML = "";
+  root.parentElement.hidden = !items || items.length === 0;
 
   (items || []).forEach((item) => {
     const li = document.createElement("li");
