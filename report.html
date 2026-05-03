@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="page-title">KosmetologAI Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="report-page" id="report-page" hidden>
+        <header class="report-header">
+          <div>
+            <p class="eyebrow" id="report-kicker">Профессиональный анализ кожи и рекомендации</p>
+            <h1 id="report-title">Отчёт по коже</h1>
+            <p class="header-intro" id="overall-summary"></p>
+          </div>
+          <div class="report-meta">
+            <p><span data-i18n="metaDate">Дата</span><strong id="report-date">-</strong></p>
+            <p><span data-i18n="metaBasis">Основа</span><strong id="report-basis">Анализ фото</strong></p>
+          </div>
+        </header>
+
+        <section class="hero-grid">
+          <article class="panel media-panel">
+            <div class="panel-label" data-i18n="sourcePhoto">Исходное фото</div>
+            <img id="source-image" alt="User photo" />
+          </article>
+
+          <div class="hero-stack">
+            <article class="panel score-panel">
+              <div class="panel-label" data-i18n="overallScore">Общая оценка</div>
+              <div class="score-line">
+                <strong id="overall-score">0.0</strong>
+                <span>/ 10</span>
+              </div>
+              <p class="score-verdict" id="overall-verdict">Сбалансированное состояние</p>
+            </article>
+
+            <article class="panel signal-panel">
+              <div class="signal-head">
+                <h2 data-i18n="keySignals">Ключевые сигналы</h2>
+                <p id="skin-type"></p>
+              </div>
+              <div class="badge-row" id="concern-badges"></div>
+              <p class="signal-copy" id="general-recommendation"></p>
+            </article>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h2 data-i18n="detailedScores">Детальные оценки</h2>
+          <div class="detail-grid" id="detail-grid"></div>
+        </section>
+
+        <section class="middle-grid">
+          <article class="panel zone-panel">
+            <h2 data-i18n="zoneAnalysis">Анализ по зонам</h2>
+            <div class="zone-list" id="zone-list"></div>
+          </article>
+
+          <div class="stack-panel">
+            <article class="panel bullet-panel">
+              <h2 data-i18n="strengths">Сильные стороны</h2>
+              <ul id="strengths-list"></ul>
+            </article>
+
+            <article class="panel bullet-panel">
+              <h2 data-i18n="improvementZones">Зоны для улучшения</h2>
+              <ul id="improvement-list"></ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="recommendation-section">
+          <h2 data-i18n="recommendations">Рекомендации</h2>
+          <div class="recommendation-grid" id="recommendation-grid"></div>
+        </section>
+
+        <section class="premium-section panel" id="premium-panel" hidden>
+          <div class="premium-header">
+            <div>
+              <p class="panel-label">Premium</p>
+              <h2 data-i18n="premiumPlan">Детальный план ухода</h2>
+            </div>
+          </div>
+          <div class="premium-grid" id="premium-grid"></div>
+        </section>
+
+        <section class="footer-grid">
+          <article class="panel compact-panel">
+            <h2 data-i18n="keyConcerns">Ключевые проблемы</h2>
+            <p id="concerns"></p>
+          </article>
+          <article class="panel compact-panel">
+            <h2 data-i18n="nextFocus">Следующий фокус</h2>
+            <p id="follow-up"></p>
+          </article>
+          <article class="panel compact-panel">
+            <h2 data-i18n="diagnosisSummary">Диагностическое резюме</h2>
+            <p id="diagnosis"></p>
+          </article>
+        </section>
+
+        <section class="products-section panel" id="products-panel" hidden>
+          <h2 data-i18n="selectedProducts">Подобранные продукты</h2>
+          <div class="products-list" id="products-list"></div>
+        </section>
+
+        <footer class="report-footer">
+          <small id="disclaimer"></small>
+        </footer>
+      </section>
+
+      <section class="empty-state" id="empty-state">
+        <div class="empty-card">
+          <h1 id="empty-title">Report unavailable</h1>
+          <p id="empty-message">This report link is invalid or not configured yet.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="./config.js"></script>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
